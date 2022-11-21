@@ -13,32 +13,37 @@ import java.util.List;
 @Controller
 @RequestMapping("/validation/v1/items")
 @RequiredArgsConstructor
-public class ValidationItemControllerV1 {
+public class ValidationItemControllerV1
+{
 
     private final ItemRepository itemRepository;
 
     @GetMapping
-    public String items(Model model) {
+    public String items(Model model)
+    {
         List<Item> items = itemRepository.findAll();
         model.addAttribute("items", items);
         return "validation/v1/items";
     }
 
     @GetMapping("/{itemId}")
-    public String item(@PathVariable long itemId, Model model) {
+    public String item(@PathVariable long itemId, Model model)
+    {
         Item item = itemRepository.findById(itemId);
         model.addAttribute("item", item);
         return "validation/v1/item";
     }
 
     @GetMapping("/add")
-    public String addForm(Model model) {
+    public String addForm(Model model)
+    {
         model.addAttribute("item", new Item());
         return "validation/v1/addForm";
     }
 
     @PostMapping("/add")
-    public String addItem(@ModelAttribute Item item, RedirectAttributes redirectAttributes) {
+    public String addItem(@ModelAttribute Item item, RedirectAttributes redirectAttributes)
+    {
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
         redirectAttributes.addAttribute("status", true);
@@ -46,14 +51,16 @@ public class ValidationItemControllerV1 {
     }
 
     @GetMapping("/{itemId}/edit")
-    public String editForm(@PathVariable Long itemId, Model model) {
+    public String editForm(@PathVariable Long itemId, Model model)
+    {
         Item item = itemRepository.findById(itemId);
         model.addAttribute("item", item);
         return "validation/v1/editForm";
     }
 
     @PostMapping("/{itemId}/edit")
-    public String edit(@PathVariable Long itemId, @ModelAttribute Item item) {
+    public String edit(@PathVariable Long itemId, @ModelAttribute Item item)
+    {
         itemRepository.update(itemId, item);
         return "redirect:/validation/v1/items/{itemId}";
     }
